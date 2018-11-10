@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import loginRoutine from '@/utils/login-routine'
+import { login } from '@/utils/auth'
 
 export default {
   data () {
@@ -25,7 +25,7 @@ export default {
 
   methods: {
     login () {
-      loginRoutine({ username: this.username, password: this.password })
+      login({ username: this.username, password: this.password })
         .then(() => this.$router.push('/'))
     }
   }
