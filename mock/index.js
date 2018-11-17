@@ -9,12 +9,26 @@ app.use(function(req, res, next) {
 });
 app.use(bodyParser.json());
 
+const users = {
+  '001': {
+    name: 'John',
+    password: 'abcd',
+    role: 'user'
+  },
+  '002': {
+    name: 'Bob',
+    password: '1234',
+    role: 'admin'
+  }
+}
+
 app.post('/api/v1/login', (req, res) => {
   const user = req.body;
   console.log(user)
-  if (user.username === 'admin' && user.password === 'password') {
+  if (users.hasOwnProperty(user.id) && users[user.id].password === user.password) {
     const data = {
-      token: 'this-is-sample-token'
+      token: 'this-is-sample-token',
+      user: users[user.id]
     }
     res.send(data);
   } else {

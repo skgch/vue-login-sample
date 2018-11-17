@@ -15,7 +15,7 @@ new Vue({
   template: '<App/>'
 })
 
-const token = localStorage.getItem('user-tocken')
-if (token) {
-  axios.defaults.headers.common['Authorization'] = token
+const auth = JSON.parse(localStorage.getItem('auth'))
+if (!!auth && !!auth.token) {
+  axios.defaults.headers.common['Authorization'] = auth.token
 }

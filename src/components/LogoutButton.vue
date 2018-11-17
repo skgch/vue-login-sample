@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <h1>Account</h1>
-    <button @click="logout">Logout</button>
-  </div>
+  <button @click="logout">Logout</button>
 </template>
 
 <script>
@@ -12,7 +9,7 @@ export default {
   methods: {
     logout () {
       logout()
-        .then(() => this.$router.push('/'))
+      this.$router.push('/login')
     }
   }
 }

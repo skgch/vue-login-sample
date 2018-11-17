@@ -2,8 +2,8 @@
  <div>
    <form class="login" @submit.prevent="login">
      <h1>Sign in</h1>
-     <label>User name</label>
-     <input required v-model="username" type="text" placeholder="Snoopy"/>
+     <label>User ID</label>
+     <input required v-model="id" type="text" placeholder="Snoopy"/>
      <label>Password</label>
      <input required v-model="password" type="password" placeholder="Password"/>
      <hr/>
@@ -18,15 +18,16 @@ import { login } from '@/utils/auth'
 export default {
   data () {
     return {
-      username: '',
+      id: '',
       password: ''
     }
   },
 
   methods: {
     login () {
-      login({ username: this.username, password: this.password })
+      login({ id: this.id, password: this.password })
         .then(() => this.$router.push('/'))
+        .catch(err => console.log(err))
     }
   }
 }

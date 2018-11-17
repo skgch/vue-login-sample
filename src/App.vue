@@ -14,9 +14,8 @@ export default {
   created () {
     axios.interceptors.response.use(undefined, function (err) {
       return Promise((resolve, reject) => {
-        console.log(err)
         if (err.status === 401) {
-          localStorage.removeItem('user-token')
+          localStorage.removeItem('auth')
           this.$router.push('/login')
         }
         throw err

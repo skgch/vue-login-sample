@@ -2,44 +2,53 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
-import Account from '@/components/Account'
+import Admin from '@/components/Admin'
 
 Vue.use(Router)
 
-function ifAuthenticated (to, from, next) {
-  if (localStorage.getItem('user-token')) {
-    next()
-    return
-  }
-  next('/login')
-}
-
-function ifNotAuthenticated (to, from, next) {
-  if (!localStorage.getItem('user-token')) {
-    next()
-    return
-  }
-  next('/')
-}
-
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/account',
-      name: 'Account',
-      component: Account,
-      beforeEnter: ifAuthenticated
+      path: '/admin',
+      name: 'Admin',
+      component: Admin,
+      meta: {
+        requiresAuth: true, requiresAdmin: true
+      }
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login,
-      beforeEnter: ifNotAuthenticated
+      component: Login
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const auth = JSON.parse(localStorage.getItem('auth'))
+  if (to.meta.requiresAuth) {
+    if (!auth || !auth.token) {
+      next('/login')
+    } else if (to.meta.requiresAdmin) {
+      if (auth.user.role === 'admin') {
+        next()
+      } else {
+        next('/')
+      }
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+export default router
